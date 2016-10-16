@@ -1,0 +1,59 @@
+// #1
+CREATE TABLE reviews(
+	id int,
+	restaurant_name text,
+	customer_review text,
+	review_date timestamp,
+	PRIMARY KEY (restaurant_name, review_date, id)
+);
+
+// CREATE INDEX ON reviews(restaurant_name);
+
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (1, 'Restaurant-1', 'So so Good', '2014-09-23');
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (2, 'Restaurant-2', 'Good', '2015-07-03');
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (3, 'Restaurant-1', 'Very Good', '2016-11-13');
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (4, 'Restaurant-2', 'So so Good', '2014-09-11');
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (5, 'Restaurant-1', 'Good', '2015-10-024');
+INSERT INTO reviews (id, restaurant_name, customer_review, review_date) VALUES (6, 'Restaurant-2', 'Very Good', '2015-04-09');
+
+// SELECT * FROM reviews WHERE restaurant_name='Restaurant-1' ORDER BY review_date;
+SELECT customer_review FROM reviews WHERE restaurant_name='Restaurant-1' ORDER BY review_date;
+
+//
+//#2
+CREATE TABLE restaurant(
+	id int,
+	restaurant_name text,
+	zipcode text,
+	rating float,
+	PRIMARY KEY (zipcode, rating, id)
+);
+
+INSERT INTO restaurant (id, restaurant_name, zipcode, rating) VALUES (1, 'Res1', '38111', 3.5);
+INSERT INTO restaurant (id, restaurant_name, zipcode, rating) VALUES (2, 'Res2', '38152', 4.5);
+INSERT INTO restaurant (id, restaurant_name, zipcode, rating) VALUES (3, 'Res3', '38111', 3.2);
+INSERT INTO restaurant (id, restaurant_name, zipcode, rating) VALUES (4, 'Res2', '38152', 3.1);
+INSERT INTO restaurant (id, restaurant_name, zipcode, rating) VALUES (5, 'Res1', '38111', 2.5);
+
+// SELECT * FROM restaurant WHERE zipcode='38111' ORDER BY rating;
+SELECT restaurant_name FROM restaurant WHERE zipcode='38111' ORDER BY rating;
+
+//
+// #3
+CREATE TABLE cuisine(
+	id int,
+	restaurant_name text,
+	zipcode text,
+	specific_cuisine text,
+	PRIMARY KEY ((zipcode, specific_cuisine), id)
+);
+
+INSERT INTO cuisine (id, restaurant_name, zipcode, specific_cuisine) VALUES (1, 'Res1', '38111', 'American');
+INSERT INTO cuisine (id, restaurant_name, zipcode, specific_cuisine) VALUES (2, 'Res2', '38152', 'Chinese');
+INSERT INTO cuisine (id, restaurant_name, zipcode, specific_cuisine) VALUES (3, 'Res3', '38111', 'Chinese');
+INSERT INTO cuisine (id, restaurant_name, zipcode, specific_cuisine) VALUES (4, 'Res2', '38152', 'Chinese');
+INSERT INTO cuisine (id, restaurant_name, zipcode, specific_cuisine) VALUES (5, 'Res3', '38111', 'American');
+
+
+// SELECT * FROM cuisine WHERE zipcode='38111' and specific_cuisine='American';
+SELECT restaurant_name FROM cuisine WHERE zipcode='38111' and specific_cuisine='American';
