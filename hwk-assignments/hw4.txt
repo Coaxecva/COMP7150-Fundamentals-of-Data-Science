@@ -1,0 +1,58 @@
+####### 2
+from pyspark import SparkContext
+import sys
+
+# Optional SparkContext
+# sc = SparkContext()
+
+lines=sc.textFile("file:///home/cloudera/test.txt")
+
+split_line = lines.flatMap(lambda line:line.split("\n")).map(lambda line: len(line.split(" ")))
+
+count = split_line.filter(lambda x: x>10).count()
+
+count
+
+
+####### 3
+lines1 = sc.textFile('file:///home/cloudera/test1.txt')
+lines2 = sc.textFile('file:///home/cloudera/test2.txt')
+
+words1 = lines1.flatMap(lambda line:line.lower().split(" ")).distinct()
+words2 = lines2.flatMap(lambda line:line.lower().split(" ")).distinct()
+
+# words1.collect()
+# words2.collect()
+
+stopwords = ['a', 'an', 'the']
+
+words1 = words1.filter(lambda x: x not in stopwords)
+words2 = words2.filter(lambda x: x not in stopwords)
+
+#wl1 = words1.collect()
+wl2 = words2.collect()
+
+words1 = words1.filter(lambda x: x in wl2)
+#words2 = words2.filter(lambda x: x in wl1)
+
+words1.collect()
+#words2.collect()
+
+
+####### 4
+import re 
+
+lines = sc.textFile('file:///home/cloudera/test1.txt')
+
+lines = lines.map(lambda line: re.sub(r'[^\w\s]','',line))
+
+split_line = lines.flatMap(lambda line: line.lower().split("\n")).zipWithIndex()
+
+split_line = split_line.map(lambda (key, index): (key.split(" "),index))
+
+split_line = split_line.flatMap(lambda (key, index): [(key[i], index) for i in range(len(key))] )
+
+inverted_index = split_line.map(lambda (x,y): (x, [y])).reduceByKey(lambda p,q: p+q).map(lambda (x, y): (x, set(y)))
+
+inverted_index.collect()
+
